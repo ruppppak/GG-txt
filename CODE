@@ -1,0 +1,201 @@
+#include<stdio.h>
+#include<stdlib.h>
+struct Node
+{
+	int data;
+	struct Node *link;
+};
+
+void create(struct Node **f,struct Node **l,struct Node **c)
+{
+    int x;
+			char ch='y';
+			while(ch=='y'||ch=='Y')  //
+			{
+				printf("\nEnter Value : ");
+				scanf("%d",&x);
+				*c=(struct Node*)malloc(sizeof(struct Node));
+				(*c)->data=x;
+				(*c)->link=NULL;
+				if((*f)==NULL)
+				{
+					(*f)=(*l)=(*c);
+				}
+				else
+				{
+					(*l)->link=*c;
+					*l=*c;
+				}
+				printf("\n Want to add More(Press Y) : ");
+				scanf(" %c",&ch);
+				
+				
+			}  
+}
+	
+	
+void show(struct Node *c)
+{
+  if(f==NULL)
+  {
+    printf("\n List is empty");
+    return;
+  }
+  //c=f;
+			while(c!=NULL)
+			{
+				printf("%d ",c->data);
+				c=c->link;
+			}
+			printf("\n");	
+  
+}
+
+int main()
+{
+	int option;
+	struct Node *f=NULL,*l,*c;
+	while(option!=7)
+	{
+		printf("\tMenu : \n\n1. Create List\n2.Display List\n3.Insert Node\n4.Delete Node\n5.Sort Node\n6.Search Node\n7.Exit\n\n:");
+		scanf("%d",&option);
+		if(option==1) // Creation
+		{
+			create(&f,&l,&c);
+		}
+		else if(option==2) // Display
+		{
+			show(f);
+		}
+		else if(option==3) // Insertion
+		{
+			int po,ele,n=0;
+			c=f;
+			while(c!=NULL)
+			{
+				n++;
+				c=c->link;
+			}
+			printf("Enter the Position to be inserted (%d): ",n);
+			scanf("%d",&po);
+			printf("Enter Element : ");
+			scanf("%d",&ele);
+			struct Node *new_node=(struct Node*)malloc(sizeof(struct Node));
+			new_node->data=ele;
+			new_node->link=NULL;
+			if(po==1)
+			{
+				new_node->link=f;
+				f=new_node;
+			}
+			else if(po==n+1)	
+			{
+				l->link=new_node;
+				l=new_node;
+			}
+			else if(po>0 && po<n+1)
+			{
+				struct Node *m;
+				int i;
+				m=f;
+				i=1;
+				for(i=1;i<po-1;i++)
+				{
+					m=m->link;
+				}
+				new_node->link=m->link;
+				m->link=new_node;
+			}
+		}
+		else if(option==4) // Deletion
+		{
+			int po,n=0;
+			c=f;
+			while(c!=NULL)
+			{
+				n++;
+				c=c->link;
+			}
+			printf("Enter the position to be deleted (%d): ",n);
+			scanf("%d",&po);
+			if(po==1)
+			{
+				c=f;
+				f=f->link;
+				free(c);
+			}
+			else if(po==n)
+			{
+				c=f;
+				for(int i=1;c->link->link!=NULL;i++)
+				c=c->link;
+				struct Node *m=c->link;
+				l=c;
+				free(m);
+				l->link=NULL;
+			}
+			else if(po>0 && po<n+1)
+			{
+				struct Node *m;
+				int i;
+				c=f;
+				i=1;
+				for(i=1;i<po-1;i++)
+				{
+					c=c->link;
+				}	
+				m=c->link;
+				c->link=m->link;
+				free(m);
+			}
+		}
+		else if(option==5) //Sortting
+		{
+			int temp;
+			c=f;
+			struct Node *c1;
+			while(c->link!=NULL)
+			{
+				c1=c->link;
+				while(c1!=NULL)
+				{
+					if(c->data>c1->data)
+					{
+						temp=c->data;
+						c->data=c1->data;
+						c1->data=temp;
+					}
+					c1=c1->link;
+				}
+				c=c->link;
+			}
+		}
+		else if(option==6)
+		{
+			int s,d=0;
+			c=f;
+			printf("Enter the Number to be searched : ");
+			scanf("%d",&s);
+			for(int i=1;c->link!=NULL;i++,c=c->link)
+			{
+				if(c->data==s)
+				{
+					printf("Item %d found at position : %d",s,i);
+					printf("\n");
+					d=1;
+				}
+			}
+			if(d==0)
+			printf("Item Not Found in List !!!");
+		}
+		else if(option==7)
+		{
+			break;
+		}
+		else
+		{
+			printf("Invalid Choice ! \n Please Try Again... \n");
+		}
+	}
+}
+
